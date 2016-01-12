@@ -27,6 +27,7 @@
 Update date_start and date_end of Project Task when the status changes
     """,
     'data': [
+        'views/project_view.xml',
     ],
     'installable': True,
 }
