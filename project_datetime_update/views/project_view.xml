@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="task_type_edit_datetime">
+            <field name="name">project.task.type.form.datetime</field>
+            <field name="model">project.task.type</field>
+            <field name="inherit_id" ref="project.task_type_edit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form[@string='Task Stage']/group" position="after">
+                    <group>
+                        <field name="stage_start"/>
+                        <field name="stage_end"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>
