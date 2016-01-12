@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #    Odoo, Open Source Management Solution
-#    Copyright (C) 2015 Rooms For (Hong Kong) Limited T/A OSCG
+#    Copyright (C) 2016 Rooms For (Hong Kong) Limited T/A OSCG
 #    <https://www.odoo-asia.com>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -18,17 +18,21 @@
 
 {
     'name': 'Project Datetime Update',
-    'version': '8.0.0.5',
-    'author': 'Rooms For (Hong Kong) T/A OSCG',
-    'depends': ['project',],
-    'website': 'https://www.odoo-asia.com',
-    'summary':"""Update project datetime when status changes""",
+    'summary':"""""",
+    'version': '8.0.0.5.0',
+    'category': 'Project',
     'description': """ 
-Update date_start and date_end of Project Task when the status changes
+* Provides hook points for task.create and task.write to completely overrides the methods.
+* Updates date_start and date_end of Project Task when the status changes.
     """,
-    'data': [
-        'views/project_view.xml',
+    'author': 'Rooms For (Hong Kong) Limited T/A OSCG',
+    'website': 'https://www.odoo-asia.com',
+    'license': 'AGPL-3',
+    'depends': ['project',],
+    'data': ['views/project_view.xml',
     ],
     'installable': True,
+    'application': False,
+    'auto_install': False,
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
