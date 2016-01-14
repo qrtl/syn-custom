@@ -32,12 +32,10 @@ def write(self, cr, uid, ids, vals, context=None):
 #     # user_id change: update date_start
 #         if vals.get('user_id') and 'date_start' not in vals:
 #             vals['date_start'] = fields.datetime.now()
-        if not self.browse(cr, uid, ids, context=context).date_start:
-            if self.pool.get('project.task.type').browse(cr, uid, [vals['stage_id']]).stage_start:
-                vals['date_start'] = fields.datetime.now()
-        if not self.browse(cr, uid, ids, context=context).date_end:
-            if self.pool.get('project.task.type').browse(cr, uid, [vals['stage_id']]).stage_end:
-                vals['date_end'] = fields.datetime.now()
+        if not self.browse(cr, uid, ids).date_start and self.pool.get('project.task.type').browse(cr, uid, [vals['stage_id']]).stage_start:
+            vals['date_start'] = fields.datetime.now()
+        if not self.browse(cr, uid, ids).date_end and self.pool.get('project.task.type').browse(cr, uid, [vals['stage_id']]).stage_end:
+            vals['date_end'] = fields.datetime.now()
     # <<< modified by OSCG
 
     # Overridden to reset the kanban_state to normal whenever
