@@ -17,13 +17,13 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 {
-    'name': 'Project Name Get',
+    'name': 'Project Subject Change',
     'summary':"""""",
     'version': '8.0.0.5.0',
     'category': 'Project',
-    'description': """ 
-* Change the name_get method of the project.task object so that it returns "(Project Name) / (Task Name)".
-* It is used for the subject of emails that are notified from messages sent using Subtype.
+    'description': """
+* Change subject of email sent using subtypes of project.task to "[odoo] (Project Name) / (Task Name)".
+* Include changing the method of name_get.
     """,
     'author': 'Rooms For (Hong Kong) Limited T/A OSCG',
     'website': 'https://www.odoo-asia.com',
