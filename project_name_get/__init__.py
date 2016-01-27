@@ -16,20 +16,6 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from openerp.osv import fields, osv
-
-class mail_mail(osv.Model):
-    _inherit = "mail.mail"
-
-    def send_get_mail_subject(self, cr, uid, mail, force=False, partner=None, context=None):
-        if (force or not mail.subject) and mail.model == 'project.task':
-            project_name = self.pool[mail.model].browse(cr, uid, [mail.res_id]).project_id.name
-            task_name = self.pool[mail.model].browse(cr, uid, [mail.res_id]).name
-            return '[odoo] %s / %s' % (project_name, task_name)
-        elif (force or not mail.subject) and mail.record_name:
-            return '[odoo] %s' % (mail.record_name)
-        elif (force or not mail.subject) and mail.parent_id and mail.parent_id.subject:
-            return '[odoo] Re: %s' % (mail.parent_id.subject)
-        return mail.subject
+import models
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -22,8 +22,7 @@
     'version': '8.0.0.5.0',
     'category': 'Project',
     'description': """
-* Change subject of email sent using subtypes of project.task to "[odoo] (Project Name) / (Task Name)".
-* Include changing the method of name_get.
+* Change subject of email sent from project.task to "[odoo] (Project Name) / (Task Name)".
     """,
     'author': 'Rooms For (Hong Kong) Limited T/A OSCG',
     'website': 'https://www.odoo-asia.com',
