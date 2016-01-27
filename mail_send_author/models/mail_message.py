@@ -17,10 +17,52 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from openerp.osv import osv
-from openerp import SUPERUSER_ID
+from openerp import SUPERUSER_ID, api
 
 class mail_message(osv.Model):
     _inherit = 'mail.message'
+
+    @api.cr_uid_ids_context
+    def set_message_read(self, cr, uid, msg_ids, read, create_missing=True, context=None):
+        """ Set messages as (un)read. Technically, the notifications related
+            to uid are set to (un)read. If for some msg_ids there are missing
+            notifications (i.e. due to load more or thread parent fetching),
+            they are created.
+
+            :param bool read: set notification as (un)read
+            :param bool create_missing: create notifications for missing entries
+                (i.e. when acting on displayed messages not notified)
+
+            :return number of message mark as read
+        """
+        notification_obj = self.pool.get('mail.notification')
+        user_pid = self.pool['res.users'].browse(cr, SUPERUSER_ID, uid, context=context).partner_id.id
+        domain = [('partner_id', '=', user_pid), ('message_id', 'in', msg_ids)]
+        if not create_missing:
+            domain += [('is_read', '=', not read)]
+        notif_ids = notification_obj.search(cr, uid, domain, context=context)
+# start addition
+        if context.get('mail_read_set_read'):
+            if msg_ids:
+                messages = self.browse(cr, uid, msg_ids[0], context=context)
+                user_partner = self.pool.get('res.partner').browse(cr, uid, user_pid, context=context)
+                if messages.author_id.email == user_partner.email:
+                    return len(notif_ids)
+# end addition
+
+        # all message have notifications: already set them as (un)read
+        if len(notif_ids) == len(msg_ids) or not create_missing:
+            notification_obj.write(cr, uid, notif_ids, {'is_read': read}, context=context)
+            return len(notif_ids)
+
+        # some messages do not have notifications: find which one, create notification, update read status
+        notified_msg_ids = [notification.message_id.id for notification in notification_obj.browse(cr, uid, notif_ids, context=context)]
+        to_create_msg_ids = list(set(msg_ids) - set(notified_msg_ids))
+        for msg_id in to_create_msg_ids:
+            notification_obj.create(cr, uid, {'partner_id': user_pid, 'is_read': read, 'message_id': msg_id}, context=context)
+        notification_obj.write(cr, uid, notif_ids, {'is_read': read}, context=context)
+        return len(notif_ids)
+
 
     def _notify(self, cr, uid, newid, context=None, force_send=False, user_signature=True):
         """ Add the related record followers to the destination partner_ids if is not a private message.
