@@ -27,7 +27,7 @@
     'author': 'Rooms For (Hong Kong) Limited T/A OSCG',
     'website': 'https://www.odoo-asia.com',
     'license': 'AGPL-3',
-    'depends': ['project',],
+    'depends': ['project','mail',],
     'data': [
     ],
     'installable': True,
